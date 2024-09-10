@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from discord.ext import tasks
-import requests
+import asyncio
 import time
 import datetime
 from apikeys import *
@@ -17,15 +16,15 @@ async def on_ready():
 
 @client.command()
 async def studyTimer(ctx, minute, subject):
+    
     curr_time = datetime.datetime.now().strftime("%I:%M %p")
     end_time = datetime.datetime.fromtimestamp(time.time() + (int(minute)*60)).strftime("%I:%M %p")
     response = f"\n{ctx.author.name}'s Study Session:\n`{minute} Minutes`\n`Studying: {subject}`\n`End Time: {end_time}`"
     await ctx.send(response)
 
+    await asyncio.sleep(int(minute)*60)
+    await ctx.send(f"{ctx.author.name} is done studying {subject}!")
 
-
-
-    
 client.run(BOTTOKEN)
 
 
